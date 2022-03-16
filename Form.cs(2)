@@ -26,6 +26,10 @@ namespace fighting
         public Form1()
         {
             InitializeComponent();
+
+            timer1.Interval = 100;
+            timer1.Tick += new EventHandler(Update);
+
             Init();
         }
 
@@ -36,7 +40,7 @@ namespace fighting
 
 
              player = new Entity(100, 100, Hero.idleFrames, Hero.runFrames, Hero.attackFrames, Hero.deathFrames, dwarfSheet);
-            Invalidate();
+            timer1.Start();
         }
 
 
@@ -46,11 +50,19 @@ namespace fighting
 
         }
 
+
+        public void Update(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
+
+
+
         private void OnePaint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
 
-            g.DrawImage(player.spriteSheet, new Rectangle(new Point(player.posX, player.posY), new Size(player.size, player.size)), 0, 0, 30, 30, GraphicsUnit.Pixel);
+            g.DrawImage(player.spriteSheet, new Rectangle(new Point(player.posX, player.posY), new Size(player.size, player.size)), 0, 0, player.size, player.size, GraphicsUnit.Pixel);
 
         }
     }
