@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace fighting.Controllers
+{
+    public static class MapController
+    {
+        public const int mapHeight = 20;
+        public const int mapWidth = 20;
+        public static int cellSize = 31;
+        public static int[,] map = new int[mapHeight, mapWidth];
+        public static Image spritesSheet;
+        public static void Init()
+        {
+            map = GetMap();
+            spritesSheet = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.FullName.ToString(), "Sprites\\Forest.png")); 
+        }
+
+
+        public static  int[,] GetMap()                                  //вернуть отображение карты
+        {
+            return new int[,]{
+                {1 ,6 ,6 ,6 ,6 ,6,6 ,6 ,6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2  },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 11, 0, 0, 10, -1, -1, 7  },
+                { 5 ,-1 ,-1 ,-1 ,0 ,0,11 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7 },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, 10, -1, -1, 7  },
+                {5 ,-1 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 11, 0, -1, -1, -1, 7  },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,20, 20, 0, 0, 0, 0, 0, 0, 10, -1, -1, 7  },
+                { 5 ,-1 ,-1 ,-1 ,0 ,0,0 ,20 ,11, 20, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7 },
+                {5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,20, 20, 0, 0, 0, 0, 0, 0, 10, -1, -1, 7  },
+                {5 ,-1 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7  },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 11, 0, 0, 0, 0, 0, 0, 10, -1, -1, 7  },
+                { 5 ,-1 ,-1 ,-1 ,0 ,0,11 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7  },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, 10, -1, -1, 7  },
+                { 5 ,-1 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7 },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,11 ,0, 0, 0, 0, 0, 0, 0, 0, 10, -1, -1, 7  },
+                { 5 ,-1 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7 },
+                { 5 ,10 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 11, 0, 0, 10, -1, -1, 7 },
+                { 5 ,-1 ,-1 ,-1 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 7 },
+                { 5 ,0 ,0 ,0 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7  },
+                {5 ,0 ,0 ,0 ,0 ,0,0 ,0 ,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7  },
+                { 3 ,8 ,8 ,8 ,8 ,8,8 ,8 ,8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4 },
+            };
+        }
+
+        public static void SeedMap(Graphics g)                                   //функция заполняет карту
+        {
+            for (int i = 0; i < mapWidth; i++)
+            {
+                for (int j = 0; j < mapWidth; j++)
+                {
+                    if (map[i, j] == 10)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize * 3, cellSize * 3)), 202, 298, 107, 114, GraphicsUnit.Pixel);
+                    }
+                    if (map[i, j] == 11)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(20, 11)), 581, 114, 19, 11, GraphicsUnit.Pixel);
+                    }
+                    if (map[i, j] == 20)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(15, 10)), 610, 4, 10, 8, GraphicsUnit.Pixel);
+                    }
+                }
+            }
+
+        }
+
+
+
+        public static void DrawMap(Graphics g)
+        {
+            for (int i = 0; i < mapWidth; i++)
+            {
+                for (int j = 0; j < mapWidth; j++)
+                {
+                    
+                    if (map[i, j] == 1)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 96, 0, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 2)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 170, 0, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 3)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 96, 75, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 4)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 170, 75, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 5)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 96, 20, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 6)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 120, 0, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 7)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 170, 30, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    if (map[i, j] == 8)
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 120, 75, 20, 20, GraphicsUnit.Pixel);
+                    }else
+                    
+                    {
+                        g.DrawImage(spritesSheet, new Rectangle(new Point(j * cellSize, i * cellSize), new Size(cellSize, cellSize)), 0, 0, 20, 20, GraphicsUnit.Pixel);
+                    }
+                }
+            }
+            SeedMap(g);
+        }
+        public static int GetWidht()
+        {
+            return cellSize * (mapWidth+1) + 15;
+        }
+        public static int GetHeight()
+        {
+            return cellSize * (mapHeight+1) + 10;
+        }
+    }
+}
